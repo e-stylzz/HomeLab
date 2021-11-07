@@ -1,0 +1,5 @@
+---
+collections:
+  - ansible.posix # used for firewall rules
+  - community.general # give access to redhat_subscription stuff
+  - community.grafana

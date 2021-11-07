@@ -1,0 +1,9 @@
+---
+- name: Install sysstat
+  ansible.builtin.yum:
+    name: sysstat
+    state: present
+# - name: Install some grow root shit
+#   ansible.builtin.yum:
+#     name: dunno, something like: cloud-initramfs-growroot
+#     state: present

@@ -1,0 +1,9 @@
+---
+- name: Configure Monitoring
+  hosts: monitoring
+  become: yes
+  roles:
+    - prometheus
+    - alertmanager
+    - grafana
+    - rhel-subscription

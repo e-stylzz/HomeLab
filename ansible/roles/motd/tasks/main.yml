@@ -1,0 +1,7 @@
+---
+- name: Create additional motd
+  ansible.builtin.copy:
+    src: '{{ item }}'
+    dest: '/etc/motd.d/{{ item | basename }}'
+    mode: '0755'
+  with_fileglob: ./files/*
