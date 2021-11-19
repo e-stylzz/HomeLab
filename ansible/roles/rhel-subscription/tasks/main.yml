@@ -1,0 +1,7 @@
+---
+- name: Register with Red Hat
+  community.general.redhat_subscription:
+    state: present
+    username: USERNAME
+    password: PASSWORD
+    auto_attach: true

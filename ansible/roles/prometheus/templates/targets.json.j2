@@ -1,0 +1,8 @@
+[
+  {
+    "labels": {
+      "job": "{{ item.key }}"
+    },
+    "targets": {{ item.value | to_json }}
+  }
+]

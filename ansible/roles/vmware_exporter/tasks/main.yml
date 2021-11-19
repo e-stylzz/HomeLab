@@ -1,0 +1,54 @@
+---
+- name: Create vmware-exporter build directory
+  ansible.builtin.file:
+    dest: /opt/vmware_exporter/
+    state: directory
+
+- name: Install pip3 and setup-tools
+  ansible.builtin.dnf:
+    name:
+      - python3-pip
+      - python3-setuptools
+    state: present
+
+- name: Install virtualenv
+  ansible.builtin.pip:
+    name: virtualenv
+    state: present
+  become: yes
+  become_user: root
+
+- name: Install vmware_exporter
+  ansible.builtin.pip:
+    name: 'vmware-exporter{% if vmware_exporter_version is defined %}={{ vmware_exporter_version }}{% endif %}'
+    state: '{{ vmware_exporter_package_state }}'
+    virtualenv: /opt/vmware_exporter/venv
+    virtualenv_command: /usr/local/bin/virtualenv
+    # above worked, but was going to try below next:
+    # virtualenv_command: /usr/bin/python3 -m venv
+
+- name: Create vmware-exporter configuration directory
+  ansible.builtin.file:
+    dest: /etc/vmware_exporter/
+    state: directory
+
+- name: Configure vmware-exporter
+  ansible.builtin.template:
+    src: config.yml.j2
+    dest: /etc/vmware_exporter/config.yml
+  notify: restart vmware-exporter.service
+
+- name: Create systemd service file
+  ansible.builtin.template:
+    src: vmware-exporter.service.j2
+    dest: /etc/systemd/system/vmware-exporter.service
+  notify:
+    - daemon-reload
+    - enable vmware-exporter.service
+    - restart vmware-exporter.service
+
+- name: Allow firewall rule
+  ansible.posix.firewalld:
+    port: 9272/tcp
+    permanent: yes
+    state: enabled

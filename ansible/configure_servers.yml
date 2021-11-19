@@ -4,6 +4,7 @@
   become: yes
   roles:
     - prometheus
-    - alertmanager
-    - grafana
+    # - alertmanager
+    # - grafana
     - rhel-subscription
+    - vmware_exporter

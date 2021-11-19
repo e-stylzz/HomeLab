@@ -1,0 +1,15 @@
+[Unit]
+Description=vmware-exporter allows you to get vmware metric using prometheus
+After=network-online.target
+
+[Service]
+Type=simple
+User=prometheus
+Group=prometheus
+WorkingDirectory=/etc/vmware_exporter
+ExecStart=/opt/vmware_exporter/venv/bin/vmware_exporter -a 192.168.30.65 -c config.yml
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

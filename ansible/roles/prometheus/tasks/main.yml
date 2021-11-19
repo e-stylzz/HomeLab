@@ -1,0 +1,97 @@
+---
+- name: Add prometheus group
+  ansible.builtin.group:
+    name: prometheus
+    system: yes
+    state: present
+
+- name: Add prometheus user
+  ansible.builtin.user:
+    name: prometheus
+    system: yes
+    create_home: false
+    shell: /usr/sbin/nologin
+    home: /var/lib/prometheus
+    group: prometheus
+
+- name: Check if prometheus is already installed
+  ansible.builtin.stat:
+    path: /usr/local/bin/prometheus
+  register: prometheus
+
+- name: 'Download prometheus version {{ prometheus_version }}'
+  ansible.builtin.get_url:
+    url: 'https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.linux-amd64.tar.gz'
+    dest: /tmp/prometheus.tar.gz
+  when: not prometheus.stat.exists or prometheus_force_install
+
+- name: Extract prometheus binary
+  ansible.builtin.unarchive:
+    src: /tmp/prometheus.tar.gz
+    dest: /tmp
+    remote_src: yes
+    list_files: yes
+  register: archive_contents
+  when: not prometheus.stat.exists or prometheus_force_install
+
+- name: Copy prometheus binary to /usr/local/bin
+  ansible.builtin.copy:
+    src: /tmp/{{ archive_contents.files[0] }}prometheus
+    dest: /usr/local/bin/prometheus
+    owner: prometheus
+    group: prometheus
+    mode: 0700
+    remote_src: yes
+  notify: restart prometheus.service
+  when: not prometheus.stat.exists or prometheus_force_install
+
+- name: Create Prometheus Directory
+  ansible.builtin.file:
+    path: /etc/prometheus
+    state: directory
+
+- name: Configure Prometheus
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: /etc/prometheus/prometheus.yml
+  notify: restart prometheus.service
+
+- name: Create prometheus system user
+  ansible.builtin.file:
+    path: /var/lib/prometheus
+    state: directory
+    owner: prometheus
+    group: prometheus
+    mode: 0755
+
+- name: 'Create {{ item.key }} folder in prometheus folder'
+  ansible.builtin.file:
+    state: directory
+    name: '/etc/prometheus/{{ item.key }}'
+    owner: prometheus
+    group: prometheus
+  with_dict: '{{ prometheus_targets }}'
+
+- name: 'Create {{ item.key }} target file'
+  ansible.builtin.template:
+    src: targets.json.j2
+    dest: '/etc/prometheus/{{ item.key }}/targets.json'
+    owner: prometheus
+    group: prometheus
+  with_dict: '{{ prometheus_targets }}'
+  notify: restart prometheus.service
+
+- name: Create systemd service file
+  ansible.builtin.template:
+    src: prometheus.service.j2
+    dest: /etc/systemd/system/prometheus.service
+  notify:
+    - daemon-reload
+    - enable prometheus.service
+    - restart prometheus.service
+
+- name: Allow firewall rule
+  ansible.posix.firewalld:
+    port: 9091/tcp
+    permanent: yes
+    state: enabled

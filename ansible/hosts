@@ -2,7 +2,7 @@
 192.168.30.50
 192.168.30.51
 
-[win-misc]
+[win_misc]
 192.168.30.60
 192.168.30.49
 
@@ -15,7 +15,7 @@
 192.168.30.75
 192.168.30.76
 
-[lnx-misc]
+[lnx_misc]
 192.168.30.85
 192.168.30.86
 192.168.30.236
@@ -23,12 +23,12 @@
 192.168.30.100
 192.168.30.243
 
-[lnx-web]
+[lnx_web]
 192.168.30.90
 192.168.30.91
 192.168.30.80
 
-[lnx-db]
+[lnx_db]
 192.168.30.55
 
 [container]
@@ -40,13 +40,13 @@
 
 [windows:children]
 dc
-win-misc
+win_misc
 
 [linux:children]
 consul
 nomad
-lnx-misc
-lnx-web
-lnx-db
+lnx_misc
+lnx_web
+lnx_db
 container
 monitoring
