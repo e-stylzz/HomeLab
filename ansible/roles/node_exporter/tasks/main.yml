@@ -52,3 +52,4 @@
     port: 9100/tcp
     permanent: yes
     state: enabled
+    immediate: yes

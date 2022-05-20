@@ -1,4 +1,23 @@
 ---
+grafana_smtp_host: '{{ smtp_provider_host }}'
+grafana_smtp_port: '{{ smtp_provider_port }}'
+grafana_smtp_user: '{{ monitoring_email }}'
+grafana_smtp_password: '{{ smtp_monitoring_password }}'
+grafana_smtp_from_address: '{{ monitoring_email }}'
+grafana_plugins:
+  - grafana-piechart-panel
+  - grafana-clock-panel
+  - agenty-flowcharting-panel
+
+alertmanager_smtp_smarthost: '{{ smtp_provider_host }}:{{ smtp_provider_port }}'
+alertmanager_smtp_from: '{{ monitoring_email }}'
+alertmanager_smtp_require_tls: 'true'
+alertmanager_smtp_hello: alertmanager
+alertmanager_smtp_auth_username: '{{ monitoring_email }}'
+alertmanager_smtp_auth_password: '{{ smtp_monitoring_password }}'
+alertmanager_receivers_emails:
+  - '{{ email }}'
+
 prometheus_targets:
   node_exporter:
     - 192.168.30.65:9100

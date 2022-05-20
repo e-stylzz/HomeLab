@@ -1,0 +1,9 @@
+---
+- name: Install grafana plugins
+  community.grafana.grafana_plugin:
+    name: '{{ item }}'
+    version: latest
+    state: present
+  with_items: '{{ grafana_plugins }}'
+  notify:
+    - restart grafana-server

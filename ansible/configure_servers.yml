@@ -3,8 +3,8 @@
   hosts: monitoring
   become: yes
   roles:
-    - prometheus
-    # - alertmanager
-    # - grafana
     - rhel-subscription
+    - prometheus
+    - alertmanager
+    - grafana
     - vmware_exporter

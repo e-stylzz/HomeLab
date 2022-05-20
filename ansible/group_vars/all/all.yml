@@ -1,0 +1,6 @@
+---
+email: me@ericbarb.com
+monitoring_email: me@ericbarb.com
+smtp_provider_host: smtp.office365.com
+smtp_provider_port: 587
+smtp_monitoring_password: PASSWORD

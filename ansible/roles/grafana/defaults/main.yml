@@ -1,0 +1,11 @@
+---
+# grafana_version:
+grafana_package_state: latest
+grafana_admin_password: PASSWORD
+grafana_secret_key: secret_key
+grafana_smtp_host: smtp.office365.com
+grafana_smtp_port: 587
+grafana_smtp_user: me@ericbarb.com
+grafana_smtp_password: PASSWORD
+grafana_smtp_from_address: me@ericbarb.com
+grafana_plugins: []
