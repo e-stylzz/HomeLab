@@ -6,7 +6,7 @@ set -e
 vm_ssh_password=P@ssw0rd
 
 
-echo -e "Please enter your choice: \n1) Linux \n2) Windows\n"
+echo -e "Please enter your choice: \n1) Linux \n2) Windows 2019 DataCenter\n"
 while :
 do
   read CHOICE
@@ -37,7 +37,10 @@ do
 		break
 		;;
 	2)
-    printf "Come back soon\n"
+    printf "Building your windows image...\n"
+
+    packer build -force -var-file=windows2019/vars/vmware.json -var-file=windows2019/vars/vm.json windows2019/machine.json
+
 		break
 		;;
   *)
