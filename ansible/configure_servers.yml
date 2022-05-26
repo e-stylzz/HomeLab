@@ -8,3 +8,10 @@
     - alertmanager
     - grafana
     - vmware_exporter
+
+- name: Configure Consul Servers
+  hosts: consul
+  become: yes
+  roles:
+    - consul-all
+    - consul-server

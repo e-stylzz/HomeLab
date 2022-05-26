@@ -11,10 +11,6 @@
 192.168.30.71
 192.168.30.72
 
-[nomad]
-192.168.30.75
-192.168.30.76
-
 [lnx_misc]
 192.168.30.85
 192.168.30.86
@@ -37,14 +33,12 @@
 [monitoring]
 192.168.30.65
 
-
 [windows:children]
 dc
 win_misc
 
 [linux:children]
 consul
-nomad
 lnx_misc
 lnx_web
 lnx_db

@@ -1,0 +1,74 @@
+---
+- name: Create Group
+  group:
+    name: consul
+    state: present
+
+- name: Create Service Account
+  user:
+    name: consul
+    comment: Consul Service Account
+    group: consul
+    system: true
+
+- name: Install Yum Configuration Manager
+  dnf:
+    name: yum-utils
+    state: latest
+
+- name: Setup Consul Repo
+  command: 'sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo'
+  when: "ansible_os_family|lower == 'redhat'"
+
+- name: Install Consul
+  dnf:
+    name: consul
+    state: latest
+
+- name: Create config directory
+  ansible.builtin.file:
+    dest: /etc/consul.d
+    state: directory
+
+- name: Copy configuration
+  ansible.builtin.template:
+    src: consul.hcl.j2
+    dest: /etc/consul.d/consul.hcl
+  notify:
+    - restart consul.service
+
+- name: Setup folder permissions
+  file:
+    path: /etc/consul.d
+    state: directory
+    recurse: yes
+    owner: '{{ consul_user }}'
+    group: '{{ consul_group }}'
+
+- name: Setup file permissions
+  file:
+    path: /etc/consul.d/consul.hcl
+    mode: '640'
+
+- name: Setup Consul Service
+  ansible.builtin.template:
+    src: consul.service.j2
+    dest: /etc/systemd/system/consul.service
+  notify:
+    - daemon-reload
+    - enable consul.service
+    - restart consul.service
+
+- name: Allow firewall rule
+  ansible.posix.firewalld:
+    port: 8301/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: Allow firewall rule
+  ansible.posix.firewalld:
+    port: 8300/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes

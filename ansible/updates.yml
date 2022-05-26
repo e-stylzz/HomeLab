@@ -1,0 +1,10 @@
+---
+- hosts: consul
+  tasks:
+    - name: Install updates
+      dnf:
+        name: '*'
+        state: latest
+        update_cache: yes
+        update_only: yes
+      become: true
