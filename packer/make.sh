@@ -37,9 +37,24 @@ do
 		break
 		;;
 	2)
+    vcenter_username='administrator@stylzz.local'
+    
+    read -sp 'Enter your vCenter Password: ' vcenter_password
+    printf "\n"
+    read -sp 'Enter a new Administrator password: ' vm_admin_password_new
+    printf "\n"
+    read -sp 'Enter a password for the local Ansible account: ' ansible_serviceaccount_password
+    printf "\n"
+  
     printf "Building your windows image...\n"
 
-    packer build -force -var-file=windows2019/vars/vmware.json -var-file=windows2019/vars/vm.json windows2019/machine.json
+    packer build -force \
+      -var "vcenter_username=$vcenter_username" \
+      -var "vcenter_password=$vcenter_password" \
+      -var "vm_admin_password_new=$vm_admin_password_new" \
+      -var "ansible_serviceaccount_password=$ansible_serviceaccount_password" \
+      -timestamp-ui  \
+      windows2019/windows.pkr.hcl
 
 		break
 		;;

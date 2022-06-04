@@ -1,0 +1,18 @@
+---
+- name: Configure Windows Image
+  hosts: default
+  vars:
+  # roles:
+  #   - TBD
+  tasks:
+    # - name: 'Ansible | Print a variable'
+    #   debug:
+    #     msg: 'The new admin password is {{ vm_admin_password_new }}'
+
+    - name: 'Create Ansible User'
+      win_user:
+        name: ansible
+        password: '{{ ansible_serviceaccount_password }}'
+        state: present
+        groups:
+          - Administrators

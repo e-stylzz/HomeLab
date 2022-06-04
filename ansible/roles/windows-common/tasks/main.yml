@@ -1,0 +1,5 @@
+---
+- name: Create Lab folder
+  win_file:
+    path: C:\Lab
+    state: directory
