@@ -2,6 +2,6 @@
 - name: Register with Red Hat
   community.general.redhat_subscription:
     state: present
-    username: USERNAME
-    password: PASSWORD
+    username: '{{ rhel_user }}'
+    password: '{{ rhel_password }}'
     auto_attach: true
