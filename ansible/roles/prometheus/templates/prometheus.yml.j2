@@ -21,6 +21,31 @@ scrape_configs:
   - job_name: 'Random Windows Systems'
     static_configs:
       - targets: ['192.168.30.60:9182',]
+  
+  - job_name: linux_systems
+    file_sd_configs:
+    - files:
+      - linux_systems/targets.json
+    params:
+      module:
+        - node-exporter
+    relabel_configs:
+      - source_labels: [__param_target]
+        target_label: instance
+
+
+  - job_name: windows_systems
+    file_sd_configs:
+    - files:
+      - windows_systems/targets.json
+    params:
+      module:
+        - node-exporter
+    relabel_configs:
+      - source_labels: [__param_target]
+        target_label: instance
+
+
 
   - job_name: node_exporter
     file_sd_configs:

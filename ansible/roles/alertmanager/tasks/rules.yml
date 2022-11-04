@@ -4,3 +4,4 @@
     src: '{{ item }}'
     dest: "/etc/alertmanager/rules/{{ item | basename | replace('.j2', '') }}"
   with_fileglob: templates/rules/*.j2
+  notify: restart alertmanager.service

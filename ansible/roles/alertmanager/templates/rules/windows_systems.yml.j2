@@ -1,0 +1,13 @@
+{% raw %}
+groups:
+  - name: Windows Alerts
+    rules:
+    - alert: NodeDown
+      expr: up{job="windows_systems"} == 0
+      for: 2m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Node {{ $labels.instance }} is down."
+        description: "Failed to scrape {{ $labels.job }} on {{ $labels.instance }} for more then 2m.  The node could be down."
+{% endraw %}

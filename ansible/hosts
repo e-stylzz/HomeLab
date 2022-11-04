@@ -3,8 +3,7 @@
 192.168.30.51
 
 [win_misc]
-192.168.30.60
-192.168.30.49
+192.168.30.24
 
 [consul]
 192.168.30.70
@@ -12,12 +11,7 @@
 192.168.30.72
 
 [lnx_misc]
-192.168.30.85
-192.168.30.86
-192.168.30.236
-192.168.30.65
-192.168.30.100
-192.168.30.243
+
 
 [lnx_web]
 192.168.30.90
@@ -25,13 +19,20 @@
 192.168.30.80
 
 [lnx_db]
-192.168.30.55
+
 
 [container]
 192.168.30.25
 
 [monitoring]
 192.168.30.65
+
+[test]
+192.168.30.92
+
+[dotnet]
+192.168.30.111
+
 
 [windows:children]
 dc
@@ -44,3 +45,14 @@ lnx_web
 lnx_db
 container
 monitoring
+dotnet
+test
+
+[windows:vars]
+ansible_user="ansible"
+ansible_password="P@ssw0rd"
+ansible_connection=winrm
+ansible_winrm_transport=credssp
+ansible_port=5986
+ansible_winrm_message_encryption=always
+ansible_winrm_server_cert_validation=ignore

@@ -1,0 +1,27 @@
+---
+- name: Install NGINX
+  ansible.builtin.dnf:
+    name: nginx
+    update_cache: yes
+    state: present
+  notify:
+    - enable nginx
+    - start nginx
+
+- name: Allow HTTP traffic
+  ansible.posix.firewalld:
+    port: 80/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: Allow HTTPS traffic
+  ansible.posix.firewalld:
+    port: 443/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- name: SELinux - Allow Proxy
+  command: semanage boolean -m --on httpd_can_network_connect
+  # or this, not sure: setsebool -P httpd_can_network_connect 1

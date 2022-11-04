@@ -1,5 +1,5 @@
 ---
-- hosts: consul
+- hosts: linux
   tasks:
     - name: Install updates
       dnf:
@@ -8,3 +8,4 @@
         update_cache: yes
         update_only: yes
       become: true
+# ansible-playbook -i ./hosts -k ./updates.yml
