@@ -1,0 +1,17 @@
+[Unit]
+Description=Dotnet App : {{ item.name }}
+
+[Service]
+WorkingDirectory=/usr/share/nginx/html/{{item.name}}
+ExecStart=/usr/bin/dotnet /usr/share/nginx/html/{{item.name}}/{{item.dll}}.dll
+Restart=always
+# Restart service after 10 seconds if the dotnet service crashes:
+RestartSec=1
+KillSignal=SIGINT
+SyslogIdentifier={{ item.name}}
+User=nginx
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+[Install]
+WantedBy=multi-user.target

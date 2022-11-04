@@ -1,0 +1,18 @@
+---
+- name: Install .NET Core Runtime (ASP)
+  ansible.builtin.dnf:
+    name: aspnetcore-runtime-6.0
+    update_cache: yes
+    state: present
+  # notify:
+  #   - enable nginx
+  #   - start nginx
+
+  # SELINUX Will Interfere, this command will fix it without disabling:  setsebool -P httpd_can_network_connect 1
+  # Default SITE Location:  /usr/share/nginx/html
+  # Default CONF Locaiton:  /etc/nginx/nginx.conf - this needs to be updated to proxy to the port.  ex: 5000
+
+  # Need to run the dll file.  Service file handles that.
+
+  #  https://docs.microsoft.com/en-us/dotnet/core/install/linux-rhel
+  #  https://docs.microsoft.com/en-us/dotnet/core/install/linux-ubuntu

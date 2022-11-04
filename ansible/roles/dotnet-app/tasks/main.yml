@@ -1,0 +1,53 @@
+---
+- name: Reset default nginx config, removing default site.
+  ansible.builtin.copy:
+    src: nginx.conf
+    dest: /etc/nginx/nginx.conf
+  notify:
+    - restart nginx
+
+- name: Create folders for sites
+  ansible.builtin.file:
+    path: /usr/share/nginx/html/{{item.name}}
+    state: directory
+  with_items: '{{ sites }}'
+
+- name: Copy site files
+  ansible.builtin.copy:
+    src: site/
+    dest: '/usr/share/nginx/html/{{item.name}}'
+  with_items: '{{ sites }}'
+
+- name: Update app settings for sites.
+  ansible.builtin.template:
+    src: appsettings.json.j2
+    dest: /usr/share/nginx/html/{{item.name}}/appsettings.json
+  with_items: '{{ sites }}'
+  notify:
+    - restart nginx
+
+- name: Create nginx config for sites.
+  ansible.builtin.template:
+    src: site.conf.j2
+    dest: /etc/nginx/conf.d/{{item.name}}.conf
+  with_items: '{{ sites }}'
+  notify:
+    - restart nginx
+
+- name: Create systemd service file
+  ansible.builtin.template:
+    src: dotnet-app.service.j2
+    dest: '/etc/systemd/system/dotnet-{{item.name}}.service'
+  with_items: '{{ sites }}'
+  notify:
+    - daemon-reload
+    - enable dotnet.service
+    - restart dotnet.service
+
+- name: Allow firewall traffic
+  ansible.posix.firewalld:
+    port: '{{item.port}}/tcp'
+    permanent: yes
+    state: enabled
+    immediate: yes
+  with_items: '{{ sites }}'

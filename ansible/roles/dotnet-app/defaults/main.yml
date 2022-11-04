@@ -1,0 +1,12 @@
+---
+# sites: [{ 'port': 80, 'name': 'WeatherApp' }, { 'port': 81, 'name': 'TestApp' }]
+
+sites:
+  - name: WeatherApp
+    port: 80
+    proxy: 5000
+    dll: TodoApi
+  - name: TestApp
+    port: 81
+    proxy: 5001
+    dll: TodoApi
