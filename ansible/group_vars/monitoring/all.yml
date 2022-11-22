@@ -19,16 +19,15 @@ alertmanager_receivers_emails:
   - '{{ email }}'
 
 prometheus_targets:
-  node_exporter:
-    - 192.168.30.65:9100
-    - 192.168.30.60:9182
-    - 192.168.30.90:9100
   linux_systems:
     - 192.168.30.65:9100
     - 192.168.30.90:9100
     - 192.168.30.111:9100
+    - 192.168.30.25:9100
   windows_systems:
     - 192.168.30.60:9182
     - 192.168.30.23:9182
   vmware_exporter:
     - 192.168.30.10
+  # awair_exporter:
+  #   - 192.168.30.65:9877

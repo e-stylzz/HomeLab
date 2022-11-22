@@ -1,0 +1,13 @@
+[Unit]
+Description=Awair Exporter
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/exporter/awair_exporter
+ExecStart=/usr/bin/python3 /opt/exporter/awair_exporter/awair_exporter.py
+RestartSec=10
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -12,3 +12,8 @@
   ansible.builtin.systemd:
     name: alertmanager.service
     enabled: yes
+
+- name: restart prometheus.service
+  ansible.builtin.systemd:
+    name: prometheus.service
+    state: restarted

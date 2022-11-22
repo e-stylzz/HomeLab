@@ -1,0 +1,14 @@
+---
+- name: daemon-reload
+  ansible.builtin.systemd:
+    daemon_reload: yes
+
+- name: restart awair_exporter.service
+  ansible.builtin.systemd:
+    name: awair_exporter.service
+    state: restarted
+
+- name: enable awair_exporter.service
+  ansible.builtin.systemd:
+    name: awair_exporter.service
+    enabled: yes

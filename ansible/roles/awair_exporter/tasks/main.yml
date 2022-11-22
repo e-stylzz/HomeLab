@@ -1,0 +1,41 @@
+---
+- name: Create awair_exporter folder
+  ansible.builtin.file:
+    state: directory
+    name: /opt/exporter/awair_exporter
+
+- name: Copy script file
+  ansible.builtin.copy:
+    src: awair_exporter.py
+    dest: /opt/exporter/awair_exporter
+
+- name: Install pip3
+  ansible.builtin.dnf:
+    name:
+      - python3-pip
+    state: present
+
+- name: Install packages
+  ansible.builtin.pip:
+    name:
+      - prometheus_client
+      - requests
+    state: present
+  become: yes
+  become_user: root
+
+- name: Create systemd service file
+  ansible.builtin.template:
+    src: awair_exporter.service.j2
+    dest: /etc/systemd/system/awair_exporter.service
+  notify:
+    - daemon-reload
+    - enable awair_exporter.service
+    - restart awair_exporter.service
+
+- name: Allow firewall rule
+  ansible.posix.firewalld:
+    port: 9877/tcp
+    permanent: yes
+    state: enabled
+    immediate: yes

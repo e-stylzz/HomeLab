@@ -1,0 +1,22 @@
+{% raw %}
+groups:
+  - name: Awair Alerts
+    rules:
+    - alert: Temp
+      expr: ((awair_temp * 9/5) + 32) > 71
+      for: 10m
+      labels:
+        severity: warning
+      annotations:
+        summary: "Your office is to hot."
+        description: "Awair is reporting a temperature of {{ $value }} degrees."
+
+    - alert: CO2
+      expr: awair_co2 > 900
+      for: 10m
+      labels:
+        severity: warning
+      annotations:
+        summary: "CO2 Warning - Open a window or something."
+        description: "Awair is reporting CO2 level of: {{ $value }}"
+{% endraw %}
