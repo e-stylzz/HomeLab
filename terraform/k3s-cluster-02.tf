@@ -80,7 +80,7 @@ resource "proxmox_vm_qemu" "worker1" {
 
 }
 
-resource "proxmox_vm_qemu" "worker1" {
+resource "proxmox_vm_qemu" "worker2" {
   name        = "cluster2-wrk-02"
   target_node = var.proxmox_host
   clone       = "ubuntu-cloud" #var.template_name
@@ -120,7 +120,7 @@ resource "proxmox_vm_qemu" "worker1" {
 
 }
 
-resource "proxmox_vm_qemu" "worker1" {
+resource "proxmox_vm_qemu" "worker3" {
   name        = "cluster2-wrk-03"
   target_node = var.proxmox_host
   clone       = "ubuntu-cloud" #var.template_name

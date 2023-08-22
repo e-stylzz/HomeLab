@@ -1,6 +1,6 @@
 
 # Creates a proxmox_vm_qemu entity named blog_demo_test
-resource "proxmox_vm_qemu" "gitlab2" {
+resource "proxmox_vm_qemu" "gitlab" {
   name        = "gitlab"
   target_node = var.proxmox_host
   clone       = "ubuntu-jammy" #var.template_name
