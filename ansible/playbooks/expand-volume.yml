@@ -1,0 +1,38 @@
+---
+# - name: Resize Volume all da way
+#   ansible.builtin.command: resize2fs /dev/sda1
+#   become: true
+
+# - hosts: "*"
+#   become: yes
+#   tasks:
+#     - name: Expand Volume
+#       command: resize2fs /dev/sda1
+
+- hosts: "*"
+  become: yes
+  tasks:
+    - name: Expand Volume
+      filesystem:
+        fstype: 'ext4'
+        dev:  '/dev/sda1'
+        resizefs: yes  
+
+# ansible-playbook ./playbooks/expand-volume.yml -i "192.168.30.40,"
+
+
+
+# Expand Disk in Proxmox: https://www.wundertech.net/how-to-increase-vm-disk-size-in-proxmox/
+# this would probably be covered when deploying machiens via IaC
+
+# Extend partiion in Ubuntu: https://raspberrytips.com/resize-partition-ubuntu/
+
+# sudo fdisk -l # get the parition, should be /dev/sda1
+# sudo fdisk /dev/sda
+# d
+# n
+# p
+# w
+# NO
+
+# then above does the filesystem.
